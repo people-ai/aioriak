@@ -28,7 +28,7 @@ def retry_riak_errors(func):
         attempt = kwargs.pop('attempt', 1)
 
         try:
-            return await f(*args, **kwargs)
+            return await func(*args, **kwargs)
         except RiakError:
             if attempt < 3:
                 await asyncio.sleep(2)
