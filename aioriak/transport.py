@@ -2,6 +2,7 @@ import logging
 import asyncio
 import struct
 import json
+from functools import wraps
 from riak.pb import riak_pb2
 from riak.pb import riak_dt_pb2
 from riak.pb import riak_kv_pb2
@@ -17,6 +18,26 @@ from aioriak.error import RiakError
 MAX_CHUNK_SIZE = 65536
 
 logger = logging.getLogger('aioriak.transport')
+
+
+def retry_riak_errors(func):
+    """If RiakError occurs retries the same action"""
+
+    @wraps(func)
+    async def dec(*args, **kwargs):
+        attempt = kwargs.pop('attempt', 1)
+
+        try:
+            return await f(*args, **kwargs)
+        except RiakError:
+            if attempt < 3:
+                await asyncio.sleep(2)
+                kwargs['attempt'] = attempt + 1
+                return await dec(*args, **kwargs)
+
+            raise
+
+    return dec
 
 
 async def create_transport(host='localhost', port=8087, loop=None):
@@ -681,6 +702,7 @@ class RiakPbcAsyncTransport:
         else:
             return False
 
+    @retry_riak_errors
     async def get_bucket_type_props(self, bucket_type):
         '''
         Fetch bucket-type properties
@@ -919,6 +941,7 @@ class RiakPbcAsyncTransport:
         else:
             return results, None
 
+    @retry_riak_errors
     async def put(self, robj, return_body=True):
         bucket = robj.bucket
 
