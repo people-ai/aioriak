@@ -3,6 +3,7 @@ from aioriak import RiakClient
 from aioriak.tests import HOST, PORT
 import unittest
 import random
+import riak
 
 
 class IntegrationTest:
@@ -42,9 +43,11 @@ class AsyncUnitTestCase(unittest.TestCase):
         asyncio.set_event_loop(None)
         self.loop = asyncio.new_event_loop()
         self.client = self.create_client()
+        riak.disable_list_exceptions = True
 
     def tearDown(self):
         super().tearDown()
         self.client.close()
         self.loop.stop()
         self.loop.close()
+        riak.disable_list_exceptions = False
