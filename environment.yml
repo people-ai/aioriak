@@ -1,9 +1,9 @@
-name: py35
+name: py39
 dependencies:
-  - python=3.5.1=0
+  - python=3.9=0
   - pip:
     - Sphinx==1.4.1
     - sphinx-autobuild==0.6.0
     - sphinx-rtd-theme==0.1.9
     - sphinxcontrib-asyncio==0.2.0
-    - riak==2.7.0
+    - riak==3.0.0

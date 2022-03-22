@@ -12,8 +12,7 @@ before_install:
   - python setup.py setup_riak
 
 python:
-  - '3.5.4'
-  - '3.6.4'
+  - '3.9.10'
 
 install:
   - pip install .

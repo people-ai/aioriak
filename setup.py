@@ -25,7 +25,7 @@ def req_file(filename):
 
 setup(
     name='ppl_aioriak',
-    version='1.0.0',
+    version='2.0.0',
     description='Async implementation of Riak DB python client',
     long_description=read("README.rst"),
     author='Makc Belousov',
@@ -53,9 +53,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Database',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],

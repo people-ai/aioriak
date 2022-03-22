@@ -22,3 +22,21 @@ publish:
 .PHONY: publish-circle
 publish-circle:
 	@twine upload --verbose --repository-url $(ARTIFACTORY_REPO) -u ${ARTIFACTORY_PYPI_USERNAME} -p ${ARTIFACTORY_PYPI_PASSWORD} dist/*
+
+.PHONY: start-test-env
+start-test-env:
+	docker-compose -f docker-compose.yml up -d
+
+.PHONY: start-integration-test
+start-integration-test:
+	DOCKER_CLUSTER=0 RIAK_ADMIN="docker exec -i -t aioriak-coordinator-1 riak-admin" python setup.py test
+# use login command - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
+
+.PHONY: stop-test-env
+stop-test-env:
+	docker-compose -f docker-compose.yml down
+
+.PHONY: publish-circle
+publish-circle:
+	@aws codeartifact login --tool twine --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
+	@twine upload --repository codeartifact dist/*

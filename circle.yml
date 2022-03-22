@@ -1,0 +1,91 @@
+version: 2.1
+
+base_image: &base_image
+  docker:
+    - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/docker-builder:latest
+
+commands:
+  install_aws_cli:
+    description: Install AWS CLI
+    steps:
+      - run:
+          name: Install AWS CLI
+          command: |
+            curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip
+            unzip -q /tmp/awscliv2.zip -d /tmp
+            sudo /tmp/aws/install
+
+jobs:
+  publish:
+    <<: *base_image
+    steps:
+      - checkout
+      - run: python3 -m venv venv && . ./venv/bin/activate
+      - run: sudo pip install -r requirements-publish.txt
+      - run: make build
+      - run: make publish-circle
+
+  test:
+    machine:
+      image: ubuntu-2004:202111-02
+    steps:
+      - run:
+          name: Spin up riakkv_host
+          command: |
+            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
+            docker run -d --name riakkv_host -p "8098:8098" -p "8087:8087" 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+      - checkout
+      - run: git submodule update --init
+      - run:
+          environment:
+            RIAK_TEST_HOST: 127.0.0.1
+            RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
+          command: |
+            docker ps
+            mkdir -p reports
+            
+            sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
+            sudo chmod -R 777 /etc/.pyenv
+            export PYENV_ROOT="/etc/.pyenv"
+            export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
+            pyenv install 3.9.10
+            pyenv global 3.9.10
+            python -V
+            python -m venv venv && . venv/bin/activate
+            aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
+            # NOTE: this is needed because of this issue:
+            # https://github.com/pypa/setuptools/issues/2849
+            # it can be removed when it is resolved
+            pip install wheel
+            python setup.py test
+      - store_test_results:
+          path: ./reports
+      - store_artifacts:
+          path: ./reports
+
+  bandit:
+    <<: *base_image
+    steps:
+      - checkout
+      - run: |
+          python3 -m venv venv && . ./venv/bin/activate
+          pip install bandit==1.7.1
+          bandit -ll -r ${CIRCLE_PROJECT_REPONAME}
+
+workflows:
+  build-test:
+    jobs:
+      - test:
+          context: staging
+      - bandit:
+          context: staging
+
+      - publish:
+          context: org-global
+          requires:
+            - bandit
+            - test
+          filters:
+            branches:
+              only:
+                - master
