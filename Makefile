@@ -22,3 +22,15 @@ publish:
 .PHONY: publish-circle
 publish-circle:
 	@twine upload --verbose --repository-url $(ARTIFACTORY_REPO) -u ${ARTIFACTORY_PYPI_USERNAME} -p ${ARTIFACTORY_PYPI_PASSWORD} dist/*
+
+.PHONY: start-test-env
+start-test-env:
+	docker-compose -f docker-compose.yml up -d
+
+.PHONY: start-integration-test
+start-integration-test:
+	DOCKER_CLUSTER=1 python setup.py test
+
+.PHONY: stop-test-env
+stop-test-env:
+	docker-compose -f docker-compose.yml down
