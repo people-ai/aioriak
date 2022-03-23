@@ -144,7 +144,7 @@ class RPBStreamParser:
     def tail(self):
         return self._in_buf
 
-    async def __aiter__(self):
+    def __aiter__(self):
         return self
 
     async def __anext__(self):
@@ -180,7 +180,7 @@ class MapRedStream:
         self._phase = None
         self._expect = expect
 
-    async def __aiter__(self):
+    def __aiter__(self):
         return self
 
     async def __anext__(self):
