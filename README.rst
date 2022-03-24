@@ -38,7 +38,7 @@ Operations timeout                  No
 Security                            No
 Riak Search                         WIP
 MapReduce                           WIP
-Tested python versions              `3.5, 3.6 <travis_>`__
+Tested python versions              `3.9 <travis_>`__
 Tested Riak versions                `2.1.3, 2.1.4 <travis_>`__
 ================================  ==============================
 
@@ -56,7 +56,7 @@ The easiest way to install aioriak is by using the package on PyPi::
 Requirements
 ------------
 
-- Python >= 3.5
+- Python >= 3.9
 - riak>=2.7.0
 
 Using exampe
