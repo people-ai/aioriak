@@ -40,7 +40,7 @@ Requirements
 ------------
 
 - Python >= 3.5
-- riak==3.0.0.ppl
+- riak==3.0.0
 
 Contribute
 ----------
