@@ -34,3 +34,8 @@ start-integration-test:
 .PHONY: stop-test-env
 stop-test-env:
 	docker-compose -f docker-compose.yml down
+
+.PHONY: publish-circle
+publish-circle:
+	@aws codeartifact login --tool twine --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
+	@twine upload --repository codeartifact dist/*
