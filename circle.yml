@@ -40,6 +40,8 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
+      - setup_remote_docker:
+          version: 19.03.13
       - run: |
           mkdir -p reports
           virtualenv --python=python3 venv && . venv/bin/activate
