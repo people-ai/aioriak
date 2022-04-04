@@ -52,6 +52,7 @@ jobs:
           make start-test-env
       - run: sleep 30
       - run: |
+          docker ps
           make start-integration-test
           make stop-test-env
       - store_test_results:
