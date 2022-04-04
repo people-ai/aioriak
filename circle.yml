@@ -50,6 +50,8 @@ jobs:
           # https://github.com/pypa/setuptools/issues/2849
           # it can be removed when it is resolved
           make start-test-env
+      - run: sleep 30
+      - run: |
           make start-integration-test
           make stop-test-env
       - store_test_results:
