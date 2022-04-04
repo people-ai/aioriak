@@ -43,16 +43,16 @@ jobs:
       - run: git submodule update --init
       - install_aws_cli
       - run:
-        environment:
-          RIAK_TEST_HOST: riakkv
-        command: |
-          mkdir -p reports
-          virtualenv --python=python3 venv && . venv/bin/activate
-          aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
-          # NOTE: this is needed because of this issue:
-          # https://github.com/pypa/setuptools/issues/2849
-          # it can be removed when it is resolved
-          python setup.py test
+          environment:
+            RIAK_TEST_HOST: riakkv
+          command: |
+            mkdir -p reports
+            virtualenv --python=python3 venv && . venv/bin/activate
+            aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
+            # NOTE: this is needed because of this issue:
+            # https://github.com/pypa/setuptools/issues/2849
+            # it can be removed when it is resolved
+            python setup.py test
       - store_test_results:
           path: ./reports
       - store_artifacts:
