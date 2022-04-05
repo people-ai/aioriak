@@ -54,6 +54,7 @@ jobs:
             echo '==='
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
+            docker ps
             docker --tlsverify -H=$DOCKER_HOST --tlscacert=$DOCKER_CERT_PATH/ca.pem --tlscert=$DOCKER_CERT_PATH/cert.pem --tlskey=$DOCKER_CERT_PATH/key.pem ps
             # docker exec -t project-coordinator-1 apt-get install -y curl
             # echo '---1---'
