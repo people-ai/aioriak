@@ -42,8 +42,6 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-      - setup_remote_docker:
-          version: 20.10.11
       - run: |
           ssh remote-docker ps aux
       - run:
@@ -53,10 +51,7 @@ jobs:
           command: |
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
-            ps aux
-            docker ps
-            docker network ls
-            sleep 15
+            docker --tlsverify -H=$DOCKER_HOST --tlscacert=$DOCKER_CERT_PATH/ca.pem --tlscert=$DOCKER_CERT_PATH/cert.pem --tlskey=$DOCKER_CERT_PATH/key.pem ps
             # docker exec -t project-coordinator-1 apt-get install -y curl
             # echo '---1---'
             # docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
