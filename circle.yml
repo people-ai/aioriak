@@ -42,20 +42,15 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-      - setup_remote_docker:
-          version: 20.10.11
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
             RIAK_ADMIN: 'ssh remote-docker riak-admin'
           command: |
-            echo '==='
-            echo $DOCKER_CERT_PATH
-            echo '==='
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
             docker ps
-            docker --tlsverify -H=$DOCKER_HOST --tlscacert=$DOCKER_CERT_PATH/ca.pem --tlscert=$DOCKER_CERT_PATH/cert.pem --tlskey=$DOCKER_CERT_PATH/key.pem ps
+            docker network ls
             # docker exec -t project-coordinator-1 apt-get install -y curl
             # echo '---1---'
             # docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
