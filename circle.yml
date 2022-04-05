@@ -47,8 +47,6 @@ jobs:
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             make start-test-env
-            docker ps
-            docker exec -i -t project-coordinator-1 riak-admin
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
