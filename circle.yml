@@ -42,6 +42,8 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
+      - setup_remote_docker:
+        version: 20.10.11
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
