@@ -46,6 +46,7 @@ jobs:
           version: 20.10.11
       - run:
           environment:
+            RIAK_TEST_HOST: riakkv
             RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
           command: |
             docker ps
