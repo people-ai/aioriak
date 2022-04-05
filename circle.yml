@@ -42,8 +42,8 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-#      - setup_remote_docker:
-#          version: 20.10.11
+      - setup_remote_docker:
+          version: 20.10.11
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
@@ -51,8 +51,8 @@ jobs:
           command: |
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
-            # docker ps
-            # docker network ls
+            docker ps
+            docker network ls
             sleep 15
             # docker exec -t project-coordinator-1 apt-get install -y curl
             # echo '---1---'
