@@ -59,13 +59,9 @@ jobs:
           pip install bandit==1.7.1
           bandit -ll -r ${CIRCLE_PROJECT_REPONAME}
 
-orbs:
-  sumologic: circleci/sumologic@1.0.6
-
 workflows:
   build-test:
     jobs:
-      - sumologic/workflow-collector
       - test:
           context: staging
       - bandit:
