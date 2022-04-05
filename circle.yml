@@ -53,7 +53,7 @@ jobs:
             docker ps
             docker network ls
             echo '---2---'
-            curl http://project-coordinator-1:8098/ping
+            curl http://localhost:8098/ping
             echo '---3---'
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
