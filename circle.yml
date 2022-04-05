@@ -53,6 +53,7 @@ jobs:
             make start-test-env
             docker ps
             docker network ls
+            docker exec -t project-coordinator-1 apt-get install -y ps
             docker exec -t project-coordinator-1 apt-get install -y curl
             docker exec -t project-coordinator-1 ps aux
             docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
