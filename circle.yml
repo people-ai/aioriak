@@ -50,7 +50,8 @@ jobs:
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
-            docker run --name riak_host 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+            docker run --detach --name riak_host --hostname riak_host --publish 8098:8098 --publish 8087:8087 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+            sleep 20
             docker ps
             docker network ls
             echo '---2---'
