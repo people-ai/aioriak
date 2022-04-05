@@ -36,18 +36,14 @@ jobs:
   test:
     docker:
       - image: cimg/python:3.9.10
-#      - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
-#        name: riakkv
     steps:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
       - setup_remote_docker
-#          version: 20.10.11
       - run:
-#          environment:
-#            RIAK_TEST_HOST: riakkv
-#            RIAK_ADMIN: 'docker exec --network container:riakkv -i -t aioriak-coordinator-1 riak-admin'
+          environment:
+            RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             make start-test-env
