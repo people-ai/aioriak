@@ -47,13 +47,12 @@ jobs:
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
-#            RIAK_ADMIN: 'docker run --name project-coordinator-1 riak-admin'
+#            RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             make start-test-env
             docker ps
             docker network ls
-#            docker exec -i -t project-coordinator-1 riak-admin
             docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
