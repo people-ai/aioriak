@@ -45,11 +45,11 @@ jobs:
       - setup_remote_docker:
           version: 20.10.11
       - run: |
-          ssh remote-docker docker ps
+          ssh remote-docker riak-admin
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
-            RIAK_ADMIN: 'riak-admin'
+            RIAK_ADMIN: 'ssh remote-docker riak-admin'
           command: |
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
