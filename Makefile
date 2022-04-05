@@ -30,6 +30,7 @@ start-test-env:
 .PHONY: start-integration-test
 start-integration-test:
 	DOCKER_CLUSTER=1 python setup.py test
+# use login command - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
 
 .PHONY: stop-test-env
 stop-test-env:
