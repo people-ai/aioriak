@@ -47,7 +47,7 @@ jobs:
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
-#            RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
+            RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             make start-test-env
