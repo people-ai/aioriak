@@ -68,8 +68,6 @@ workflows:
       - sumologic/workflow-collector
       - test:
           context: staging
-      - mypy:
-          context: staging
       - bandit:
           context: staging
 
