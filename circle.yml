@@ -54,6 +54,7 @@ jobs:
             docker ps
             docker network ls
             sleep 15
+            ssh riakkv riak-admin
             # docker exec -t project-coordinator-1 apt-get install -y curl
             # echo '---1---'
             # docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
