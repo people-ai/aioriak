@@ -25,14 +25,6 @@ jobs:
       - run: make build
       - run: make publish-circle
 
-  mypy:
-    <<: *base_image
-    steps:
-      - checkout
-      - run: |
-          sudo pip install mypy
-          mypy --ignore-missing-imports --install-types --non-interactive ${CIRCLE_PROJECT_REPONAME}
-
   test:
     docker:
       - image: cimg/python:3.9.10
@@ -86,7 +78,6 @@ workflows:
           requires:
             - bandit
             - test
-            - mypy
           filters:
             branches:
               only:
