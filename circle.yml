@@ -42,8 +42,6 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-      - run: |
-          ssh remote-docker ps aux
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
