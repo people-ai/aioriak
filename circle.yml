@@ -53,8 +53,8 @@ jobs:
             make start-test-env
             docker ps
             docker network ls
-            docker run --name project-coordinator-1 riak-admin
-            curl http://127.0.0.1:8098/ping
+#            docker exec -i -t project-coordinator-1 riak-admin
+            docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
