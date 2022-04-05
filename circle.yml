@@ -36,29 +36,29 @@ jobs:
   test:
     docker:
       - image: cimg/python:3.9.10
-#      - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
-#        name: riakkv
+      - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+        name: riakkv
     steps:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-      - setup_remote_docker:
-          version: 20.10.11
+#      - setup_remote_docker:
+#          version: 20.10.11
       - run:
           environment:
-#            RIAK_TEST_HOST: riakkv
-            RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
+            RIAK_TEST_HOST: riakkv
+            RIAK_ADMIN: 'riak-admin'
           command: |
-            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
-            make start-test-env
-            docker ps
-            docker network ls
+            # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
+            # make start-test-env
+            # docker ps
+            # docker network ls
             sleep 15
-            docker exec -t project-coordinator-1 apt-get install -y curl
-            echo '---1---'
-            docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
+            # docker exec -t project-coordinator-1 apt-get install -y curl
+            # echo '---1---'
+            # docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
             echo '---2---'
-            curl http://127.0.0.1:8098/ping
+            curl http://riakkv:8098/ping
             echo '---3---'
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
