@@ -44,6 +44,8 @@ jobs:
       - install_aws_cli
       - setup_remote_docker:
           version: 20.10.11
+      - run: |
+          ssh remote-docker riak-admin
       - run:
           environment:
             RIAK_TEST_HOST: riakkv
