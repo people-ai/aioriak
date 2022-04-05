@@ -46,7 +46,7 @@ jobs:
           version: 20.10.11
       - run:
           environment:
-            RIAK_TEST_HOST: riakkv
+#            RIAK_TEST_HOST: riakkv
             RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
@@ -55,7 +55,11 @@ jobs:
             docker network ls
             sleep 15
             docker exec -t project-coordinator-1 apt-get install -y curl
+            echo '---1---'
             docker exec -t project-coordinator-1 curl http://127.0.0.1:8098/ping
+            echo '---2---'
+            curl http://127.0.0.1:8098/ping
+            echo '---3---'
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
