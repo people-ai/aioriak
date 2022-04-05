@@ -42,7 +42,7 @@ jobs:
       - checkout
       - run: git submodule update --init
       - install_aws_cli
-      - setup_remote_docker
+      - setup_remote_docker:
       - run:
           environment:
             RIAK_ADMIN: 'docker exec -i -t project-coordinator-1 riak-admin'
