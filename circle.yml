@@ -36,8 +36,8 @@ jobs:
   test:
     docker:
       - image: cimg/python:3.9.10
-#      - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
-#        name: riakkv
+      - image: 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+        name: riakkv
     steps:
       - checkout
       - run: git submodule update --init
