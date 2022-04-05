@@ -47,6 +47,9 @@ jobs:
             RIAK_TEST_HOST: riakkv
             RIAK_ADMIN: 'ssh remote-docker riak-admin'
           command: |
+            echo '==='
+            echo $DOCKER_CERT_PATH
+            echo '==='
             # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             # make start-test-env
             docker --tlsverify -H=$DOCKER_HOST --tlscacert=$DOCKER_CERT_PATH/ca.pem --tlscert=$DOCKER_CERT_PATH/cert.pem --tlskey=$DOCKER_CERT_PATH/key.pem ps
