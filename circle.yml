@@ -60,6 +60,9 @@ jobs:
             sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
             sudo /etc/.pyenv/bin/pyenv install 3.9.10
             sudo /etc/.pyenv/bin/pyenv global 3.9.10
+            python -V
+            curl http://riakkv_host:8098/ping
+            docker exec -i -t riakkv_host riak-admin
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
