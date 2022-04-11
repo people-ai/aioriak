@@ -69,7 +69,6 @@ jobs:
             curl http://riakkv_host:8098/ping
             mkdir -p reports
             
-            python -m venv venv
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
             # NOTE: this is needed because of this issue:
