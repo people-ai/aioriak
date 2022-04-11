@@ -28,8 +28,6 @@ jobs:
   test:
     machine:
       image: ubuntu-2004:202111-02
-#    docker:
-#      - image: cimg/python:3.9.10
     steps:
       - run:
           name: Spin up riakkv_host
@@ -54,7 +52,6 @@ jobs:
       - run: docker exec riakkv_host echo "hello"
       - checkout
       - run: git submodule update --init
-      - install_aws_cli
       - run:
           environment:
             RIAK_TEST_HOST: riakkv_host
