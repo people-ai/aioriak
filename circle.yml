@@ -58,7 +58,7 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             docker ps
-            curl http://localhost:8098/ping
+            curl http://127.0.0.1:8098/ping
             mkdir -p reports
             
             #python -m venv venv
