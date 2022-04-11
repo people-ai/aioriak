@@ -58,8 +58,8 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             sudo git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-            sudo export PYENV_ROOT="$HOME/.pyenv"
-            sudo export PATH="$PYENV_ROOT/bin:$PATH"
+            export PYENV_ROOT="$HOME/.pyenv"
+            export PATH="$PYENV_ROOT/bin:$PATH"
             sudo pyenv init -
             sudo exec "$SHELL"
             sudo pyenv install 3.9.10
