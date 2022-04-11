@@ -57,8 +57,10 @@ jobs:
             RIAK_TEST_HOST: riakkv_host
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
-            sudo apt install python3.9.10
-            python3 -V
+            sudo apt upgrade -y
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt install python3.9
             python -V
             docker ps
             curl http://riakkv_host:8098/ping
