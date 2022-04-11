@@ -58,14 +58,13 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
-            sudo /etc/.pyenv/bin/pyenv install 3.9.10
-            sudo /etc/.pyenv/bin/pyenv local 3.9.10
-            python -V
+            sudo pyenv install 3.9.10
             python3 -V
             docker ps
-            docker exec -i -t riakkv_host riak-admin
             curl http://riakkv_host:8098/ping
             mkdir -p reports
+            
+            
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
             # NOTE: this is needed because of this issue:
