@@ -59,7 +59,7 @@ jobs:
           command: |
             sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
             sudo /etc/.pyenv/bin/pyenv install 3.9.10
-            sudo /etc/.pyenv/bin/pyenv shell 3.9.10
+            sudo /etc/.pyenv/bin/pyenv local 3.9.10
             python -V
             python3 -V
             docker ps
