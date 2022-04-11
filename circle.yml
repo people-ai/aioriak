@@ -57,9 +57,9 @@ jobs:
             RIAK_TEST_HOST: riakkv_host
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
-            git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
-            /etc/.pyenv/bin/pyenv install 3.9.10
-            /etc/.pyenv/bin/pyenv global 3.9.10
+            sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
+            sudo /etc/.pyenv/bin/pyenv install 3.9.10
+            sudo /etc/.pyenv/bin/pyenv global 3.9.10
             mkdir -p reports
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
