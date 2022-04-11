@@ -65,6 +65,7 @@ jobs:
             sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt install python3.9
             python -V
+            python3 -V
             docker ps
             curl http://riakkv_host:8098/ping
             mkdir -p reports
