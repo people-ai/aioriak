@@ -42,7 +42,6 @@ jobs:
             do
               if $(nc -z localhost 8098); then
                 echo "Connected!"
-                curl -vv http://127.0.0.1:8098/ping 
                 exit 0
               fi
               echo "Not connected; retrying"
@@ -51,6 +50,11 @@ jobs:
             done
             exit 1
       - run: docker exec riakkv_host echo "hello"
+      - run:
+          name: Print logs on riakkv_host (background)
+          background: true
+          command: |
+            docker logs -f riakkv_host
       - checkout
       - run: git submodule update --init
       - run:
@@ -59,7 +63,7 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             docker ps
-            curl http://127.0.0.1:8098/ping
+            curl -vv http://127.0.0.1:8098/ping
             mkdir -p reports
             
             #python -m venv venv
