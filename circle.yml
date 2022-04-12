@@ -42,6 +42,7 @@ jobs:
             do
               if $(nc -z localhost 8098); then
                 echo "Connected!"
+                curl http://127.0.0.1:8098/ping
                 exit 0
               fi
               echo "Not connected; retrying"
