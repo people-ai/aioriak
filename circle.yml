@@ -34,6 +34,7 @@ jobs:
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             docker run -d --name riakkv_host -p "8098:8098" 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
+            docker run -d -p "8080:80" --name "fancy-nginx" docker.io/library/nginx:latest
       - run:
           name: Wait on application to be ready
           command: |
@@ -49,12 +50,6 @@ jobs:
               sleep 1
             done
             exit 1
-      - run: docker exec riakkv_host echo "hello"
-      - run:
-          name: Print logs on riakkv_host (background)
-          background: true
-          command: |
-            docker logs -f riakkv_host
       - checkout
       - run: git submodule update --init
       - run:
@@ -63,6 +58,10 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             docker ps
+            curl -vv http://localhost:8080/50x.html
+            sleep 1
+            
+            curl -vv http://127.0.0.1:8080/50x.html
             curl -vv http://127.0.0.1:8098/ping
             mkdir -p reports
             
