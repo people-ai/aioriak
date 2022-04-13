@@ -34,7 +34,6 @@ jobs:
           command: |
             aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
             docker run -d --name riakkv_host -p "8098:8098" 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
-            docker run -d -p "8080:80" --name "fancy-nginx" docker.io/library/nginx:latest
       - run:
           name: Wait on application to be ready
           command: |
@@ -58,14 +57,10 @@ jobs:
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
             docker ps
-            curl -vv http://localhost:8080/50x.html
-            sleep 1
-            
-            curl -vv http://127.0.0.1:8080/50x.html
+            sleep 10
             curl -vv http://127.0.0.1:8098/ping
             mkdir -p reports
             
-            #python -m venv venv
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
             # NOTE: this is needed because of this issue:
