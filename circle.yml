@@ -56,9 +56,7 @@ jobs:
             RIAK_TEST_HOST: riakkv_host
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
-            docker ps
             sleep 10
-            curl -vv http://127.0.0.1:8098/ping
             mkdir -p reports
             
             virtualenv --python=python3 venv && . venv/bin/activate
@@ -66,7 +64,9 @@ jobs:
             # NOTE: this is needed because of this issue:
             # https://github.com/pypa/setuptools/issues/2849
             # it can be removed when it is resolved
-            python setup.py test
+            python -V
+            python3 -V
+            python3 setup.py test
       - store_test_results:
           path: ./reports
       - store_artifacts:
