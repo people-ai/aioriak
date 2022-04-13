@@ -66,7 +66,7 @@ jobs:
             # NOTE: this is needed because of this issue:
             # https://github.com/pypa/setuptools/issues/2849
             # it can be removed when it is resolved
-            python setup.py test - ignore test because of circleci: we need 'docker exec' command and 'communication over tcp to the host'
+            python setup.py test
       - store_test_results:
           path: ./reports
       - store_artifacts:
