@@ -49,13 +49,14 @@ jobs:
             export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
             pyenv install 3.9.10
             pyenv global 3.9.10
-            
+            python -V
             sleep 10
-            virtualenv --python=python3 venv && . venv/bin/activate
+            python -m venv venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
             # NOTE: this is needed because of this issue:
             # https://github.com/pypa/setuptools/issues/2849
             # it can be removed when it is resolved
+            python -V
             python setup.py test
       - store_test_results:
           path: ./reports
