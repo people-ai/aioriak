@@ -44,6 +44,7 @@ jobs:
             mkdir -p reports
             
             sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
+            sudo chmod -R 777 /etc/.pyenv
             export PYENV_ROOT="/etc/.pyenv"
             export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
             pyenv install 3.9.10
