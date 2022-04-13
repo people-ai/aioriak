@@ -46,7 +46,10 @@ jobs:
             sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
             export PYENV_ROOT="/etc/.pyenv"
             export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
+            pyenv install 3.9.10
+            pyenv global 3.9.10
             pyenv versions
+            python -V
             
             sleep 10
             virtualenv --python=python3 venv && . venv/bin/activate
