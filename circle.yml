@@ -32,23 +32,8 @@ jobs:
       - run:
           name: Spin up riakkv_host
           command: |
-            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
-            docker run -d --name riakkv_host -p "8098:8098" 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
-      - run:
-          name: Wait on application to be ready
-          command: |
-            N=8
-            while [ $N -gt 0 ]
-            do
-              if $(nc -z localhost 8098); then
-                echo "Connected!"
-                exit 0
-              fi
-              echo "Not connected; retrying"
-              N=$(( $N - 1 ))
-              sleep 1
-            done
-            exit 1
+            # aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 093527149400.dkr.ecr.us-west-2.amazonaws.com
+            # docker run -d --name riakkv_host -p "8098:8098" 093527149400.dkr.ecr.us-west-2.amazonaws.com/riak-kv:circleci-ppl-patch
       - checkout
       - run: git submodule update --init
       - run:
@@ -56,17 +41,20 @@ jobs:
             RIAK_TEST_HOST: riakkv_host
             RIAK_ADMIN: 'docker exec -i -t riakkv_host riak-admin'
           command: |
-            sleep 10
             mkdir -p reports
             
+            sudo git clone https://github.com/pyenv/pyenv.git /etc/.pyenv
+            export PYENV_ROOT="/etc/.pyenv"
+            export PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
+            pyenv versions
+            
+            sleep 10
             virtualenv --python=python3 venv && . venv/bin/activate
             aws codeartifact login --tool pip --domain people-ai --repository pai-pypi --region us-east-1 --duration 900
             # NOTE: this is needed because of this issue:
             # https://github.com/pypa/setuptools/issues/2849
             # it can be removed when it is resolved
-            python -V
-            python3 -V
-            python3 setup.py test
+            python setup.py test
       - store_test_results:
           path: ./reports
       - store_artifacts:
