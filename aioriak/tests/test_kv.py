@@ -7,7 +7,7 @@ import asyncio
 import json
 import pickle
 import copy
-
+import riak
 
 testrun_props_bucket = 'propsbucket'
 testrun_sibs_bucket = 'sibsbucket'
@@ -618,7 +618,11 @@ class BasicKVTests(IntegrationTest, AsyncUnitTestCase):
             self.assertIn(json.dumps({'foo': 'one', 'bar': 'red'}), results)
             self.assertIn(json.dumps({'foo': 'two', 'bar': 'green'}), results)
 
-        self.loop.run_until_complete(go())
+        try:
+            riak.disable_list_exceptions = True
+            self.loop.run_until_complete(go())
+        finally:
+            riak.disable_list_exceptions = False
 
     def test_stream_map_reduce(self):
         async def go():
@@ -642,4 +646,8 @@ class BasicKVTests(IntegrationTest, AsyncUnitTestCase):
             self.assertIn(json.dumps({'foo': 'one', 'bar': 'red'}), results)
             self.assertIn(json.dumps({'foo': 'two', 'bar': 'green'}), results)
 
-        self.loop.run_until_complete(go())
+        try:
+            riak.disable_list_exceptions = True
+            self.loop.run_until_complete(go())
+        finally:
+            riak.disable_list_exceptions = False
