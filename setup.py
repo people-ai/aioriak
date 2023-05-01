@@ -25,7 +25,7 @@ def req_file(filename):
 
 setup(
     name='ppl_aioriak',
-    version='3.0.0a1',
+    version='3.0.0',
     description='Async implementation of Riak DB python client',
     long_description=read("README.rst"),
     author='Makc Belousov',
