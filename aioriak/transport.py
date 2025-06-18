@@ -215,6 +215,7 @@ class RiakPbcAsyncTransport:
         self._writer = writer
         self._reader = reader
         self._parser = None
+        self._lock = asyncio.Lock()
 
     def _encode_content(self, robj, rpb_content):
         '''
@@ -616,28 +617,30 @@ class RiakPbcAsyncTransport:
             return rw
 
     async def _stream(self, msg_code, msg=None, expect=None):
-        self._writer.write(self._encode_message(msg_code, msg))
-        self._parser = self.StreamParserClass(self._reader, loop=self._loop)
-        responses = []
-        async for code, pbo in self._parser:
-            if expect is not None and code != expect:
-                raise Exception('Unexpected response code ({})'.format(code))
-            responses.append((code, pbo))
-        return responses
+        async with self._lock:
+            self._writer.write(self._encode_message(msg_code, msg))
+            self._parser = self.StreamParserClass(self._reader, loop=self._loop)
+            responses = []
+            async for code, pbo in self._parser:
+                if expect is not None and code != expect:
+                    raise Exception('Unexpected response code ({})'.format(code))
+                responses.append((code, pbo))
+            return responses
 
     async def _request(self, msg_code, msg=None, expect=None):
-        self._writer.write(self._encode_message(msg_code, msg))
-        if self._parser:
-            tail = self._parser.tail
-            del self._parser
-        else:
-            tail = bytearray()
-        self._parser = self.ParserClass(self._reader, tail, loop=self._loop)
-        code, response = await self._parser.get_pbo()
+        async with self._lock:
+            self._writer.write(self._encode_message(msg_code, msg))
+            if self._parser:
+                tail = self._parser.tail
+                del self._parser
+            else:
+                tail = bytearray()
+            self._parser = self.ParserClass(self._reader, tail, loop=self._loop)
+            code, response = await self._parser.get_pbo()
 
-        if expect is not None and code != expect:
-            raise Exception('Unexpected response code ({})'.format(code))
-        return code, response
+            if expect is not None and code != expect:
+                raise Exception('Unexpected response code ({})'.format(code))
+            return code, response
 
     async def _read_response(self):
         while not self._reader.at_eof():
